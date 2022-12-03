@@ -1,10 +1,10 @@
 <template>
 
-    <h1 class="text-lg mb-2">Create</h1>
+    <h1 class="text-lg mb-2">Edit</h1>
     <div class="ml-2 mb-4">
         <Link :href="route('post.index')" class="text-sky-500 text-sm mb-8">Back</Link>
     </div>
-    <form @submit.prevent="store">
+    <form @submit.prevent="update">
         <div class="mb-4">
             <input v-model="title" type="text" class="w-full rounded-full border-gray-300" placeholder="title">
         </div>
@@ -28,15 +28,19 @@ export default {
     components: {
         Link
     },
+    props: [
+        'post'
+    ],
     data(){
         return {
-            title: '',
-            content: '',
+            id: this.post.id,
+            title: this.post.title,
+            content: this.post.content,
         }
     },
     methods: {
-        store(){
-            this.$inertia.post('/posts',{title:this.title,content:this.content})
+        update(){
+            this.$inertia.patch(`/posts/${this.id}`,{title:this.title,content:this.content})
         }
     }
 }
